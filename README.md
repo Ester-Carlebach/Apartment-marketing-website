@@ -1,91 +1,191 @@
-# Real Estate Marketing Website
+#  Vacation Apartments Marketing Platform
 
-## Overview
+A full-stack **Node.js** application for publishing, managing, and searching vacation apartments.  
+The system includes secure authentication, authorization, advanced filtering, and real-time weather integration.
 
-This project is a Real Estate Marketing Website that allows users to browse, filter, and view property listings securely. It includes both Admin and Client interfaces, with a strong focus on security using **bcrypt** for password hashing and **JWT** for secure session management.
-
----
-
-## Features
-
-- **Separate User Interfaces** for Admin and Client
-- **Security & Authentication**:
-  - Password hashing with bcrypt
-  - Session management with JWT (JSON Web Tokens)
-- **Property Management** (Admin interface):
-  - Add new properties
-  - Update existing property details
-  - Delete properties (optional)
-- **Client Interface**:
-  - View list of properties
-  - View detailed information for each property
-  - Filter properties based on various criteria (price, location, size, etc.)
+This project was developed as a **final project** and demonstrates backend architecture, business logic and security practices.
 
 ---
 
-## Technologies
-
-- Backend: **Node.js** with Express.js
-- Frontend: **React**
-- Database: **MongoDB**
-- Security: bcrypt + JWT
+##  Table of Contents
+- Overview
+- Key Features
+- Data Models
+- API Capabilities
+- Technologies Used
+- Installation & Setup
+- Authorization Rules
+- Project Structure
+- What This Project Demonstrates
+- License
+- Contribution
 
 ---
 
-## Installation and Running
+##  Overview
 
-### Backend
+The platform allows **publishers** to register, log in, and manage vacation apartment listings.  
+Apartments can be searched and filtered by city, category, price, and number of beds, while enriching responses with publisher contact details.
 
-## 1. Navigate to the server folder:
-   ```bash cd server`
-## 2. Install dependencies:
+---
+
+##  Key Features
+
+###  Publisher Management
+- Registration with **unique email validation**
+- Secure login using **JWT authentication**
+- Passwords encrypted with **bcrypt**
+- Each publisher can manage **only their own apartments**
+
+###  Cities & Categories
+- Add new cities *(authorized publishers only)*
+- Retrieve all cities
+- Retrieve **current weather** by city code
+- Add and retrieve apartment categories (e.g. Zimmer, Vacation Apartment, Rental Unit)
+
+### 🏠 Apartment Management (CRUD)
+Authorized publishers can:
+- Add apartments
+- Update apartments they own
+- Delete apartments they own
+
+Each apartment includes:
+- Name (optional)
+- Description
+- Image
+- Address
+- City reference
+- Category reference
+- Number of beds
+- Extras
+- Price
+- Publisher contact details
+
+---
+
+##  Data Models
+
+### Publisher
+- Email (unique)
+- Password (encrypted)
+- Phone
+- Optional additional phone
+- Apartments array
+
+### City
+- City name
+- Apartments array
+
+### Category
+- Category name
+- Apartments array
+
+### Apartment
+- Name (optional)
+- Description
+- Image
+- City code
+- Category code
+- Address
+- Number of beds
+- Extras
+- Price
+- Publisher code
+
+---
+
+##  API Capabilities & Queries
+
+### Apartments Retrieval
+- Get all apartments
+- Get apartments by category code
+- Get apartments by city code
+- Get apartments by number of beds:
+  - Greater than
+  - Less than
+  - Equal to
+- Get apartments by price:
+  - Greater than
+  - Less than
+- Get apartments by publisher code *(authorized only)*
+
+📎 Each apartment response includes:
+- City name
+- Category name
+- Publisher contact details (email & phone)
+
+---
+
+##  Technologies Used
+
+**Backend**
+- Node.js
+- Express.js
+- MongoDB
+- Mongoose
+
+**Security**
+- JWT (Authentication & Authorization)
+- bcrypt (Password encryption)
+
+**External APIs**
+- Weather API (real-time city weather)
+
+**Tools**
+- Git & GitHub
+- RESTful API architecture
+
+---
+
+##  Installation & Setup
+
+```bash
+git clone https://github.com/Ester-Carlebach/Apartment-marketing-website.git
+cd Apartment-marketing-website
 npm install
-## 3. Set environment variables (e.g., in .env file):
-MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret_key
-## 4.Start the server:
 npm start
-### Frontend
-## 1. Navigate to the client folder:
-cd client
-## 2.Install dependencies:
-npm install
-## 3.Start the React application:
-npm start
-## 4.Open your browser at:
-http://localhost:3000
-Project Structure
-bash
-Copy
-Edit
-/server
-  /controllers
-  /models
-  /routes
-  /middleware
-  server.js
-/client
-  /src
-    /components
-    /services
-    /pages
-    App.js
-Security
-Passwords are hashed with bcrypt before storing in the database.
+```
+## Authorization Rules
+Only authenticated publishers can:
 
-User authentication uses JWT to protect sensitive routes.
+Add cities
 
-Role-based access control (Admin / Client).
+Add categories
 
-Usage
-Users can register and log in.
+Add apartments
 
-Admins can add, update, and delete properties.
+Update or delete apartments
 
-Clients can browse, filter, and view detailed property information.
+Publishers can only update or delete apartments they own
 
-## Contributions
-Contributions and suggestions are welcome! Please open an issue or submit a pull request.
+All protected routes require valid JWT authentication
 
-## Contact
-For questions or support: esty41655@gmail.com
+##  Project Structure
+├── models        # MongoDB schemas
+├── routes        # API routes
+├── controllers   # Business logic
+├── middleware    # Authentication & authorization
+├── services      # External API integrations
+└── app.js
+
+## What This Project Demonstrates
+
+Secure authentication and authorization flows
+
+Proper password handling and encryption
+
+Complex data relationships in MongoDB
+
+Clean separation of concerns
+
+Business-oriented API design
+
+Real-world backend system thinking
+## License
+
+This project was created for educational purposes.
+
+## Contribution
+
+Pull requests are welcome.
+For significant changes, please open an issue to discuss the proposal first.
