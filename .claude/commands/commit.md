@@ -1,10 +1,10 @@
 ---
-description: Create a git commit from staged changes using the Semantic Commit Messages standard
+description: Stage, commit (Semantic Commit Messages standard), then pull and push only after my approval
 ---
 
-Create a git commit for the **currently staged** changes only, following the
-Semantic Commit Messages standard
-(https://gist.github.com/joshbuchea/6f47e86d2510bce28f8e7f42ae84c716).
+Stage changes, create a git commit following the Semantic Commit Messages
+standard (https://gist.github.com/joshbuchea/6f47e86d2510bce28f8e7f42ae84c716),
+then pull and push — but **only push after explicit user confirmation**.
 
 ## Format
 
@@ -42,18 +42,22 @@ in this order: `feat > fix > perf > refactor > style > test > docs > build > ci 
 7. If the change is non-trivial, add a body (blank line, then wrapped at ~72
    chars) explaining the **why**, not the what.
 8. Do **not** add a `Co-Authored-By` trailer or any mention of an AI assistant.
-9. Do **not** run `git add`. Do **not** amend. Do **not** push.
+9. Do **not** amend.
+10. **Never push without explicit user confirmation in the current turn.**
 
 ## Steps
 
-1. Run `git status` to see what is staged.
-2. If nothing is staged, stop and tell the user there is nothing to commit.
-3. Run `git diff --cached` to see the staged change.
-4. Run `git log -5 --pretty=format:"%s"` to sanity-check house style.
-5. Pick the single best `type` and optional `scope` from the diff.
-6. Write the subject (under 72 chars) describing the change.
-7. If the change is non-trivial, draft a short body explaining motivation.
-8. Commit using a HEREDOC for correct multi-line formatting:
+1. Run `git status` to see the working tree and what is staged.
+2. Stage the changes with `git add` (stage all with `git add -A`, or only the
+   files the user specified).
+3. If, after staging, nothing is staged, stop and tell the user there is
+   nothing to commit.
+4. Run `git diff --cached` to see the staged change.
+5. Run `git log -5 --pretty=format:"%s"` to sanity-check house style.
+6. Pick the single best `type` and optional `scope` from the diff.
+7. Write the subject (under 72 chars) describing the change.
+8. If the change is non-trivial, draft a short body explaining motivation.
+9. Commit using a HEREDOC for correct multi-line formatting:
 
 ```bash
 git commit -m "$(cat <<'EOF'
@@ -64,6 +68,18 @@ EOF
 )"
 ```
 
-9. Run `git status` to confirm the commit landed.
+10. Run `git status` to confirm the commit landed.
+11. Run `git pull origin master --rebase` to integrate remote changes.
+    - If the rebase reports conflicts, stop and report them. Do **not** push.
+12. **Stop and ask the user for explicit confirmation to push.** Show the commit
+    subject and the target ref (`master:master`). Do not proceed until the user
+    clearly approves (e.g. "yes", "push").
+13. **Only after the user confirms**, run:
+
+```bash
+git push origin master:master
+```
+
+14. Run `git status` to confirm the push completed and the branch is up to date.
 
 $ARGUMENTS
