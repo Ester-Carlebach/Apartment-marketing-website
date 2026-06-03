@@ -85,7 +85,6 @@ There is no job queue, scheduler, or worker process. All request handling comple
 
 <!-- Source: docs/architecture.mmd — regenerate with: npx -p @mermaid-js/mermaid-cli mmdc -i docs/architecture.mmd -o docs/architecture.svg -b transparent -->
 ![Architecture diagram: React client → Express API → Mongoose → MongoDB, with static image uploads](docs/architecture.svg)
-
 ---
 
 
@@ -188,8 +187,7 @@ The API binds to port 3000. The CRA dev server defaults to the same port and wil
         └── Project/
             ├── api.js               # Axios HTTP client (single module)
             ├── Components/          # Pages and shared components (MUI)
-            └── Redux/               # Vendored but unused; see Architectural Decisions
-```
+            └── Redux/               # Vendored but unused;
 
 ---
 
