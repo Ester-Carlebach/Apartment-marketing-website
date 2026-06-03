@@ -84,7 +84,7 @@ There is no job queue, scheduler, or worker process. All request handling comple
 ### System Diagram
 
 <!-- Source: docs/architecture.mmd — regenerate with: npx -p @mermaid-js/mermaid-cli mmdc -i docs/architecture.mmd -o docs/architecture.svg -b transparent -->
-![Architecture diagram: React client → Express API → Mongoose → MongoDB, with static image uploads](docs/architecture.svg)
+![Architecture diagram: React client → Express API → Mongoose → MongoDB, with static image uploads](/docs/apartment_website_layered_architecture.svg)
 ---
 
 
