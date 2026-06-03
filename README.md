@@ -40,7 +40,6 @@ Apartments can be searched and filtered by city, category, price, and number of 
 ###  Cities & Categories
 - Add new cities *(authorized publishers only)*
 - Retrieve all cities
-- Retrieve **current weather** by city code
 - Add and retrieve apartment categories (e.g. Zimmer, Vacation Apartment, Rental Unit)
 
 ### 🏠 Apartment Management (CRUD)
@@ -128,8 +127,6 @@ Each apartment includes:
 - JWT (Authentication & Authorization)
 - bcrypt (Password encryption)
 
-**External APIs**
-- Weather API (real-time city weather)
 
 **Tools**
 - Git & GitHub
