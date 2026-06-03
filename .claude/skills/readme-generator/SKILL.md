@@ -58,11 +58,63 @@ Write the README as a senior software architect documenting a real system.
 - Authentication and persistence flow where applicable
 - Async/background processing if present
 
-**Mermaid diagram** is required. Include:
-- Subgraphs per layer (Client, API, Application, Infrastructure, Database, External Services as applicable)
-- Labeled arrows showing data flow
-- Technology names on nodes
-- Styles and colors for readability
+**Mermaid diagram** is required. Keep it clean and professional: collapse each architectural layer into a single concise node rather than listing every internal component. The diagram should read top-down as a linear flow, with external services and async/background workers branching off cleanly.
+
+Follow this style exactly:
+
+```
+graph TD
+    OAuth[OAuth Provider\nExternal sign-in · issues JWT]
+
+    subgraph Client["Client Layer (Angular 18)"]
+        A[Angular SPA\nRTL Hebrew UI · JWT interceptor · services]
+    end
+
+    subgraph API["API / Routing Layer (ASP.NET Core 9)"]
+        B[Controllers · JWT Middleware · CORS\nRoute → Action · validate token]
+    end
+
+    subgraph AppLayer["Application Layer (MediatR CQRS)"]
+        C[Commands · Queries · Handlers\nBusiness logic · validation]
+    end
+
+    subgraph Data["Data / Persistence Layer (EF Core 9)"]
+        D[Repositories · DbContext · Migrations\nIRepository&lt;T&gt; · schema versioning]
+    end
+
+    subgraph Jobs["Async Jobs Layer (Hangfire)"]
+        E[Scheduled Jobs · Dashboard\nMonthly reports · month-end tasks · Israel TZ]
+    end
+
+    subgraph DB["Database Layer (PostgreSQL 14+)"]
+        P[(PostgreSQL\nApp schema + Hangfire schema)]
+    end
+
+    A -->|Redirect to login| OAuth
+    OAuth -->|Returns JWT| A
+    A -->|HTTP + JWT| B
+    B -->|IMediator.Send| C
+    C --> D
+    D --> P
+    E -->|IMediator.Send| C
+    E -->|Writes| P
+
+    style OAuth fill:#134e4a,stroke:#34d399,color:#e0e0ff
+    style Client fill:#1a1a2e,stroke:#4a9eff,color:#e0e0ff
+    style API fill:#16213e,stroke:#4a9eff,color:#e0e0ff
+    style AppLayer fill:#0f3460,stroke:#4a9eff,color:#e0e0ff
+    style Data fill:#533483,stroke:#a78bfa,color:#e0e0ff
+    style Jobs fill:#1a1a2e,stroke:#f59e0b,color:#e0e0ff
+    style DB fill:#064e3b,stroke:#34d399,color:#e0e0ff
+```
+
+Adapt the layer names, technologies, and node labels to the actual project. Diagram requirements:
+- One subgraph per layer (Client, API, Application, Infrastructure/Data, Database, External Services as applicable)
+- One concise node per layer summarizing its key components on a second line
+- External services (OAuth, third-party APIs) as standalone nodes with labeled redirect/return arrows
+- Async/background workers branching to the layers they reuse and the database they write to
+- Labeled arrows showing data flow (HTTP + JWT, IMediator.Send, Writes, etc.)
+- Dark-themed styles with one color per category: client/blue, backend layers/blue-purple, data/purple, jobs/amber, database/green, external services/teal-green
 
 **Technical depth** — discuss where applicable to the actual stack:
 - Layered backend architecture and dependency direction
