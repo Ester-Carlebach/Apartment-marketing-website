@@ -88,19 +88,6 @@ There is no job queue, scheduler, or worker process. All request handling comple
 
 ---
 
-## Architectural Decisions
-
-| Decision | Alternative Considered | Rationale |
-|---|---|---|
-| Modular monolith | Microservices per bounded context | Single team, one database, low operational surface. Service decomposition adds coordination cost without a clear scaling pressure. |
-| MongoDB + Mongoose | Relational database | Listing attributes vary across categories; document flexibility is cheaper to evolve than schema migrations at this stage. |
-| Denormalized back-references with controller-side sync | Recomputing `arrApartment` on every read | Read-amplification trade-off. Taxonomy listings stay fast in exchange for stricter discipline on writes. |
-| Stateless JWT | Server-side sessions | Avoids a shared session store. Token expiry and signing secret are sufficient for the current threat model. |
-| Local React state (`useState`) | Redux / Zustand global store | Redux packages are present in `package.json` but were never wired. The implemented state flow is component-local; documenting it as such is preferable to a partially adopted store. |
-| Static file serving from the API process | Object storage / CDN | Operationally simpler at the current scope. A future migration is noted under Future Improvements. |
-| Filters as REST path segments | Query-string filters | Matches the existing controllers and keeps each endpoint single-purpose. Composition of filters is a known limitation flagged for revision. |
-
----
 
 ## Usage
 
@@ -173,17 +160,7 @@ The API binds to port 3000. The CRA dev server defaults to the same port and wil
 
 ---
 
-## Screenshots
 
-Screenshots live under `docs/screenshots/`. The slots below are placeholders to be filled once the assets are added to the repository.
-
-| View | Path |
-|---|---|
-| Listing page | `docs/screenshots/listing.png` |
-| Filter results | `docs/screenshots/filter.png` |
-| Apartment creation (with upload) | `docs/screenshots/upload.png` |
-
----
 
 ## Project Structure
 
