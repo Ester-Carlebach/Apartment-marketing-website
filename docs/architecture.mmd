@@ -1,0 +1,46 @@
+flowchart LR
+    subgraph Client["Client (Web/)"]
+        UI["React 18 + MUI<br/>React Router 7"]
+        AX["Axios<br/>Web/src/Project/api.js"]
+    end
+
+    subgraph API["API Layer (Server/)"]
+        ROUTER["Express Routers<br/>Server/api/routers"]
+        MW["Middleware<br/>checkAuth · multer · relations"]
+    end
+
+    subgraph APP["Application Layer"]
+        CTRL["Controllers<br/>Server/api/controllers"]
+    end
+
+    subgraph PERSIST["Persistence"]
+        MODELS["Mongoose Models<br/>Server/api/models"]
+        DB[("MongoDB<br/>Articles_DB")]
+    end
+
+    subgraph STATIC["Static Assets"]
+        UPLOADS[("Server/uploads/")]
+    end
+
+    UI -->|user action| AX
+    AX -->|"HTTPS / JSON"| ROUTER
+    AX -->|"Bearer JWT"| MW
+    AX -->|"multipart/form-data"| MW
+    ROUTER --> MW
+    MW --> CTRL
+    CTRL --> MODELS
+    MODELS -->|"Mongoose driver"| DB
+    CTRL -->|"writes file"| UPLOADS
+    UI -.->|"GET /uploads/*"| UPLOADS
+
+    classDef client fill:#1f2937,stroke:#60a5fa,color:#e5e7eb;
+    classDef api fill:#0f172a,stroke:#34d399,color:#e5e7eb;
+    classDef app fill:#0f172a,stroke:#fbbf24,color:#e5e7eb;
+    classDef data fill:#111827,stroke:#f472b6,color:#e5e7eb;
+    classDef assets fill:#111827,stroke:#a78bfa,color:#e5e7eb;
+
+    class UI,AX client;
+    class ROUTER,MW api;
+    class CTRL app;
+    class MODELS,DB data;
+    class UPLOADS assets;
