@@ -12,7 +12,7 @@ import { upload } from './api/middlewares.js'
 // import Kind CarRouter from './api/routers/KindCar.js'
 
 const app = express()
-const port = 3005
+const port = 3000
 
 dotenv.config()
 
